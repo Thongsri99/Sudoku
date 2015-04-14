@@ -1,21 +1,21 @@
 import java.util.*;
-public class SudoKu1{
+public class SudoKu{
 
 	public static void main(String[] args) {
 		int [][] puzzle = new int [9][9];
 		int[][] userPuzzle = new int[9][9];
 		Scanner scan = new Scanner(System.in);
 
-		randomize(puzzle);
-		populate(0,0,puzzle);
-		equalize(puzzle, userPuzzle);
-
-		System.out.print("Choose your difficulty (Hard/Medium/Easy): ");
+		key(puzzle); //Will set the first value to a random key
+		populate(0,0,puzzle); // Will populate the puzzle based off the key
+		randomize(puzzle); //Will truly randomize the puzzle
+		equalize(puzzle, userPuzzle); //Will create two similar arrays to use an answer key. 
+		
+		System.out.print("Choose your difficulty (Hard/Medium/Easy): "); //Will ask for a difficulty.
 		String level = scan.next(); 
 
-		difficulty(level , userPuzzle);
-
-		print(userPuzzle);
+		difficulty(level , userPuzzle); //This will eliminate a set amount of values to set the difficulty.
+		print(userPuzzle);//Will simply print the puzzle out.
 
 		while (!gameOver(puzzle,userPuzzle)){
 			gameLoop(puzzle , userPuzzle);
@@ -107,10 +107,57 @@ public class SudoKu1{
 	}
 
 	//By changing the first value, it will change the rest of the puzzle.
+	static void key(int[][] key){
+		Random gen = new Random();
+		key[0][0] = gen.nextInt(9) + 1;
+	}
+
+	//The following will truly randomize the puzzle
 	static void randomize(int[][] random){
 		Random gen = new Random();
-		random[0][0] = gen.nextInt(9) + 1;
+		int[] values = {1,2,3,4,5,6,7,8,9};
+		
+		//The following is an implementation of the Fischer Yates shuffle.
+		for (int i = 0; i < values.length; i++){
+			int index = gen.nextInt(i + 1);
+			int number = values[index];
+			values[index] = values[i];
+			values[i] = number;
+		}
+
+		//The following will set each value to a random value.
+		for (int rows = 0 ; rows < random.length ; rows++){
+			for (int columns = 0; columns < random[rows].length ; columns++){
+				if (random[rows][columns] == 1){
+					random[rows][columns] = values[0];
+				}
+				else if (random[rows][columns] == 2){
+					random[rows][columns] = values[1];
+				}
+				else if (random[rows][columns] == 3){
+					random[rows][columns] = values[2];
+				}
+				else if (random[rows][columns] == 4){
+					random[rows][columns] = values[3];
+				}
+				else if (random[rows][columns] == 5){
+					random[rows][columns] = values[4];
+				}
+				else if (random[rows][columns] == 6){
+					random[rows][columns] = values[5];
+				}
+				else if (random[rows][columns] == 7){
+					random[rows][columns] = values[6];
+				}
+				else if (random[rows][columns] == 8){
+					random[rows][columns] = values[7];
+				}
+				else 
+					random[rows][columns] = values[8];
+			}
+		}
 	}
+
 
 	// The difficulty is changed by eliminating more or less values that the player can see.
 	static void difficulty(String level , int[][] array){
@@ -136,7 +183,7 @@ public class SudoKu1{
 			array[x][y] = 0;
 		}
 	}
-	
+
 	//Game will continue to ask player for the X position, Y position and the new value until all 81 values are correct
 	static void gameLoop( int[][] puzzle , int[][] array){
 
