@@ -1,5 +1,5 @@
 import java.util.*;
-public class SudoKu{
+public class SudoKu1{
 
 	public static void main(String[] args) {
 		int [][] puzzle = new int [9][9];
